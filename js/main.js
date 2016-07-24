@@ -34,7 +34,8 @@ function documentReady() {
         document.querySelector('#quote_widget .author').innerHTML = author;
         document.querySelector('#quote_widget a').href = 'https://twitter.com/intent/tweet?text="'
             + encodeURIComponent(replaceSomeSpecialChars(quote)) + '" '
-            + encodeURIComponent(replaceSomeSpecialChars(author));
+            + encodeURIComponent(replaceSomeSpecialChars(author))
+            + '&hashtags=quote&url=' + location.hostname;
 
         document.body.style.backgroundColor = newColor;
         document.querySelector('#quote_widget .new-quote').style.backgroundColor = newColor;
@@ -55,7 +56,8 @@ function replaceSomeSpecialChars(str) {
         .replace(/”/g, "'")
         .replace(/"/g, "'")
         .replace(/&#8220;/g, "'")
-        .replace(/&#8221;/g, "'");
+        .replace(/&#8221;/g, "'")
+        .replace(/&#8217;/g, "'");
 }
 
 document.addEventListener("DOMContentLoaded", documentReady);
