@@ -19,7 +19,7 @@ body {
 }
 
 
-#quote_widget button {
+#quote_widget button, #quote_widget a {
     border: 0 solid white;
     transition-property: background-color;
     transition-duration: 2s;

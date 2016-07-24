@@ -4,9 +4,10 @@ function documentReady() {
         '#26a69a', '#66bb6a', '#9ccc65', '#d4e157', '#ffee58', '#ffca28', '#ffa726', '#ff7043', '#8d6e63', '#bdbdbd'];
 
     function getRandomQuote() {
-        console.log('Retrieve quote');
+        //console.log('Retrieve quote');
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&r='+Math.random(), true);
+        xhr.open('GET', 'http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&r='
+            + Math.random(), true);
         xhr.responseType = 'json';
 
         xhr.onreadystatechange = function() {
@@ -16,7 +17,7 @@ function documentReady() {
                 console.log( 'Ошибка: ' + (this.status ? this.statusText : 'запрос не удался') );
                 return;
             }
-            console.log('Recided quote ' + this.response[0].content, this.response[0].title);
+            //console.log('Recided quote ' + this.response[0].content, this.response[0].title);
 
             showQuote(this.response[0].content, this.response[0].title);
         };
@@ -26,24 +27,36 @@ function documentReady() {
 
     function showQuote(quote, author) {
         var newColor = backgroundColors[Math.floor(Math.random() * backgroundColors.length)];
-        document.querySelector('#quote_widget blockquote').innerHTML = '<i class="fa fa-quote-left" aria-hidden="true"></i> ' + stripTags(quote);
-        document.querySelector('#quote_widget .author').innerHTML = stripTags(author);
+        quote = stripTags(quote).trim();
+        author = stripTags(author).trim();
+        document.querySelector('#quote_widget blockquote').innerHTML =
+            '<i class="fa fa-quote-left" aria-hidden="true"></i> ' + quote;
+        document.querySelector('#quote_widget .author').innerHTML = author;
+        document.querySelector('#quote_widget a').href = 'https://twitter.com/intent/tweet?text="'
+            + encodeURIComponent(replaceSomeSpecialChars(quote)) + '" '
+            + encodeURIComponent(replaceSomeSpecialChars(author));
+
         document.body.style.backgroundColor = newColor;
-        document.querySelector('#quote_widget button').style.backgroundColor = newColor;
+        document.querySelector('#quote_widget .new-quote').style.backgroundColor = newColor;
+        document.querySelector('#quote_widget a').style.backgroundColor = newColor;
     }
 
-    document.querySelector('#quote_widget button').addEventListener('click', getRandomQuote);
+    document.querySelector('#quote_widget .new-quote').addEventListener('click', getRandomQuote);
 
     getRandomQuote();
 }
 
-function stripTags(html)
-{
-    var tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+function stripTags(str) {
+    return str.replace(/(<([^>]+)>)/ig, '');
 }
 
+function replaceSomeSpecialChars(str) {
+    return str.replace(/“/g, "'")
+        .replace(/”/g, "'")
+        .replace(/"/g, "'")
+        .replace(/&#8220;/g, "'")
+        .replace(/&#8221;/g, "'");
+}
 
 document.addEventListener("DOMContentLoaded", documentReady);
 
