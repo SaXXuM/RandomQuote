@@ -24,3 +24,7 @@ body {
     transition-property: background-color;
     transition-duration: 2s;
 }
+
+#quote_widget a > .fa {
+    width: 12px
+}

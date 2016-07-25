@@ -32,14 +32,23 @@ function documentReady() {
         document.querySelector('#quote_widget blockquote').innerHTML =
             '<i class="fa fa-quote-left" aria-hidden="true"></i> ' + quote;
         document.querySelector('#quote_widget .author').innerHTML = author;
-        document.querySelector('#quote_widget a').href = 'https://twitter.com/intent/tweet?text="'
+        document.querySelector('#quote_widget .twitter').href = 'https://twitter.com/intent/tweet?text="'
             + encodeURIComponent(replaceSomeSpecialChars(quote)) + '" '
             + encodeURIComponent(replaceSomeSpecialChars(author))
-            + '&hashtags=quote&url=' + location.hostname;
+            + '&hashtags=quote&url=' + location.protocol + '//' + location.hostname;
+
+        document.querySelector('#quote_widget .facebook').href =
+            'https://www.facebook.com/dialog/feed?app_id=256494598068593&display=popup&'
+                + 'link=https%3A%2F%2Fru.wikipedia.org&'
+                + '&caption=wikipedia.org&picture=https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif&'
+                + 'name="' + encodeURIComponent(replaceSomeSpecialChars(quote)) + '"&'
+                + 'description=' + encodeURIComponent(replaceSomeSpecialChars(author));
 
         document.body.style.backgroundColor = newColor;
         document.querySelector('#quote_widget .new-quote').style.backgroundColor = newColor;
-        document.querySelector('#quote_widget a').style.backgroundColor = newColor;
+        Array.prototype.forEach.call(document.querySelectorAll('#quote_widget a'), function (el) {
+            el.style.backgroundColor = newColor;
+        });
     }
 
     document.querySelector('#quote_widget .new-quote').addEventListener('click', getRandomQuote);
